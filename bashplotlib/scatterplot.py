@@ -28,15 +28,19 @@ def get_scale(series, is_y=False, steps=20):
     return scaled_series
 
 
-def _plot_scatter(xs, ys, size, pch, colour, title, cs):
+def _plot_scatter(xs, ys, size, pch, colour, title, cs, x_title, y_title):
     plotted = set()
 
     if title:
         print(box_text(title, 2 * (len(get_scale(xs, False, size)) + 1)))
 
-    print("-" * (2 * (len(get_scale(xs, False, size)) + 2)))
+    print("  +" + "-" * (2 * (len(get_scale(xs, False, size)) + 2) - 2) + "+")
     for y in get_scale(ys, True, size):
-        print("|", end=' ')
+        if y_title == "":
+            print("  |", end=' ')
+        else:
+            print(y_title[:1], "|", end=' ')
+            y_title = y_title[1:]
         for x in get_scale(xs, False, size):
             point = " "
             for (i, (xp, yp)) in enumerate(zip(xs, ys)):
@@ -47,9 +51,10 @@ def _plot_scatter(xs, ys, size, pch, colour, title, cs):
                         colour = cs[i]
             printcolour(point + " ", True, colour)
         print(" |")
-    print("-" * (2 * (len(get_scale(xs, False, size)) + 2)))
+    print("  +" + "-" * (2 * (len(get_scale(xs, False, size)) + 2) - 2) + "+")
+    print("  ", x_title)
 
-def plot_scatter(f, xs, ys, size, pch, colour, title):
+def plot_scatter(f, xs, ys, size, pch, colour, title, x_title, y_title):
     """
     Form a complex number.
 
@@ -81,7 +86,7 @@ def plot_scatter(f, xs, ys, size, pch, colour, title):
         with open(ys) as fh:
             ys = [float(str(row).strip()) for row in fh]
 
-    _plot_scatter(xs, ys, size, pch, colour, title, cs)
+    _plot_scatter(xs, ys, size, pch, colour, title, cs, x_title, y_title)
     
 
 
@@ -97,6 +102,8 @@ def main():
     parser.add_option('-p', '--pch', help='shape of point', default="x", dest='pch')
     parser.add_option('-c', '--colour', help='colour of the plot (%s)' %
                       colour_help, default='default', dest='colour')
+    parser.add_option('-xt', '--xtitle', help='title for the x-axis', default="y axis", dest="x_title")
+    parser.add_option('-yt', '--ytitle', help='title for the y-axis', default="x axis", dest="y_title")
 
     opts, args = parser.parse_args()
 
@@ -104,7 +111,7 @@ def main():
         opts.f = sys.stdin.readlines()
 
     if opts.f or (opts.x and opts.y):
-        plot_scatter(opts.f, opts.x, opts.y, opts.size, opts.pch, opts.colour, opts.t)
+        plot_scatter(opts.f, opts.x, opts.y, opts.size, opts.pch, opts.colour, opts.t, opts.x_title, opts.y_title)
     else:
         print("nothing to plot!")
 
