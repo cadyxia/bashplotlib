@@ -30,16 +30,17 @@ def get_scale(series, is_y=False, steps=20):
 
 def _plot_scatter(xs, ys, size, pch, colour, title, cs, x_title, y_title):
     plotted = set()
+    graph = ""
 
     if title:
-        print(box_text(title, 2 * (len(get_scale(xs, False, size)) + 1)))
+        graph += box_text(title, 2 * (len(get_scale(xs, False, size)) + 1)) + '\n'
 
-    print("  +" + "-" * (2 * (len(get_scale(xs, False, size)) + 2) - 2) + "+")
+    graph += "  +" + "-" * (2 * (len(get_scale(xs, False, size)) + 2) - 2) + "+\n"
     for y in get_scale(ys, True, size):
         if y_title == "":
-            print("  |", end=' ')
+            graph += "  | "
         else:
-            print(y_title[:1], "|", end=' ')
+            graph += y_title[:1] + " | "
             y_title = y_title[1:]
         for x in get_scale(xs, False, size):
             point = " "
@@ -57,10 +58,11 @@ def _plot_scatter(xs, ys, size, pch, colour, title, cs, x_title, y_title):
                     point = "|"
                 elif y == 0.0:
                     point = "-"
-            printcolour(point + " ", True, colour)
-        print(" |")
-    print("  +" + "-" * (2 * (len(get_scale(xs, False, size)) + 2) - 2) + "+")
-    print("  ", x_title)
+            graph += point + " "
+        graph += " |\n"
+    graph += "  +" + "-" * (2 * (len(get_scale(xs, False, size)) + 2) - 2) + "+"
+    graph += "  " + x_title
+    return graph
 
 def plot_scatter(f, xs, ys, size, pch, colour, title, x_title, y_title):
     """
@@ -94,7 +96,8 @@ def plot_scatter(f, xs, ys, size, pch, colour, title, x_title, y_title):
         with open(ys) as fh:
             ys = [float(str(row).strip()) for row in fh]
 
-    _plot_scatter(xs, ys, size, pch, colour, title, cs, x_title, y_title)
+    graph = _plot_scatter(xs, ys, size, pch, colour, title, cs, x_title, y_title)
+    print(graph)
     
 
 
