@@ -14,8 +14,11 @@ from .utils.commandhelp import scatter
 
 
 def get_scale(series, is_y=False, steps=20):
-    min_val = min(series)
-    max_val = max(series)
+    min_val = -1 * (steps / 2)
+    max_val = steps / 2
+    if series != []:
+        min_val = min(series)
+        max_val = max(series)
     scaled_series = []
     for x in drange(min_val, max_val, (max_val - min_val) / steps,
                     include_stop=True):
