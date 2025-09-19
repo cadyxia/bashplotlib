@@ -31,7 +31,7 @@ def get_scale(series, is_y=False, steps=20):
     return scaled_series
 
 
-def _plot_scatter(xs, ys, size, pch, colour, title, cs, x_title, y_title):
+def _plot_scatter(xs, ys, size, pch, title, cs, x_title, y_title):
     plotted = set()
     graph = ""
 
@@ -63,7 +63,7 @@ def _plot_scatter(xs, ys, size, pch, colour, title, cs, x_title, y_title):
                     point = "-"
             graph += point + " "
         graph += " |\n"
-    graph += "  +" + "-" * (2 * (len(get_scale(xs, False, size)) + 2) - 2) + "+"
+    graph += "  +" + "-" * (2 * (len(get_scale(xs, False, size)) + 2) - 2) + "+\n"
     graph += "  " + x_title
     return graph
 
@@ -99,7 +99,7 @@ def plot_scatter(f, xs, ys, size, pch, colour, title, x_title, y_title):
         with open(ys) as fh:
             ys = [float(str(row).strip()) for row in fh]
 
-    graph = _plot_scatter(xs, ys, size, pch, colour, title, cs, x_title, y_title)
+    graph = _plot_scatter(xs, ys, size, pch, title, cs, x_title, y_title)
     print(graph)
     
 
